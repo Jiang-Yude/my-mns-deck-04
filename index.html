@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>AI 賦能可能性清單 v0.2</title>
+<style>
+  :root {
+    --bg: #D7CCC8;
+    --paper: #E8DDD4;
+    --card: #EFEBE9;
+    --text: #5D4037;
+    --text-soft: #795548;
+    --accent: #D88C3A;
+    --accent-light: #D4A574;
+    --subtle: #BCAAA4;
+    --line: #C7B8B0;
+    --highlight-bg: rgba(216,140,58,0.12);
+
+    --score-high: #7CB342;
+    --score-mid: #FFA726;
+    --score-low: #BCAAA4;
+    --score-na: #9E9E9E;
+
+    --shadow-sm: 0 1px 2px rgba(93,64,55,0.08);
+    --shadow-md: 0 2px 6px rgba(93,64,55,0.12);
+    --shadow-lg: 0 4px 16px rgba(93,64,55,0.15);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(255,255,255,0.4) 0%, transparent 40%),
+      radial-gradient(circle at 80% 60%, rgba(189,170,164,0.3) 0%, transparent 40%);
+    color: var(--text);
+    line-height: 1.75;
+    letter-spacing: 0.2px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  header {
+    padding: 64px 24px 48px;
+    text-align: center;
+    background: linear-gradient(180deg, var(--paper) 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--line);
+  }
+  header .badge {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    border: 1.5px solid var(--accent);
+    padding: 6px 18px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  header h1 {
+    font-size: clamp(26px, 4.5vw, 40px);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 14px;
+    letter-spacing: -0.5px;
+    line-height: 1.3;
+  }
+  header h1 .highlight {
+    color: var(--accent);
+    background: var(--highlight-bg);
+    padding: 0 8px;
+    border-radius: 4px;
+  }
+  header .meta {
+    color: var(--text-soft);
+    font-size: 14px;
+    margin-top: 6px;
+  }
+  header .meta-line { font-size: 13px; color: var(--subtle); margin-top: 4px; }
+
+  /* Sections */
+  section {
+    padding: 56px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  section:last-of-type { border-bottom: none; }
+  h2 {
+    font-size: 24px;
+    color: var(--text);
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--accent);
+    display: inline-block;
+    font-weight: 700;
+  }
+  h3 {
+    font-size: 18px;
+    color: var(--text);
+    margin: 28px 0 14px;
+    padding-left: 14px;
+    border-left: 4px solid var(--accent);
+    font-weight: 600;
+  }
+  p { margin-bottom: 14px; color: var(--text); }
+  .lead { font-size: 15px; color: var(--text-soft); margin-bottom: 16px; font-style: italic; }
+  ul { padding-left: 26px; margin-bottom: 14px; }
+  li { margin-bottom: 8px; }
+  strong { color: var(--accent); font-weight: 700; }
+  .em-bg { background: var(--highlight-bg); padding: 0 6px; border-radius: 3px; }
+
+  blockquote {
+    background: var(--paper);
+    border-left: 4px solid var(--accent);
+    padding: 16px 22px;
+    margin: 22px 0;
+    color: var(--text);
+    border-radius: 0 8px 8px 0;
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Sticky progress */
+  .progress-bar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--paper);
+    border-bottom: 1.5px solid var(--accent-light);
+    padding: 12px 20px;
+    box-shadow: var(--shadow-md);
+  }
+  .progress-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .progress-text {
+    font-size: 14px;
+    color: var(--text-soft);
+    flex: 1;
+    min-width: 180px;
+  }
+  .progress-text strong {
+    color: var(--accent);
+    font-size: 17px;
+    font-weight: 700;
+  }
+  .progress-track {
+    flex: 2;
+    min-width: 140px;
+    height: 7px;
+    background: var(--card);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-light), var(--accent));
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+  .btn-export {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 9px 20px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-export:hover {
+    background: #C97D2E;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Module group */
+  .module-group { margin-bottom: 36px; }
+  .group-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding: 10px 14px;
+    background: var(--paper);
+    border-left: 5px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    flex-wrap: wrap;
+  }
+  .group-tag {
+    font-size: 13px;
+    padding: 4px 12px;
+    background: var(--accent);
+    color: white;
+    border-radius: 3px;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+  }
+  .group-title { font-size: 17px; color: var(--text); font-weight: 700; }
+  .group-desc { font-size: 13px; color: var(--text-soft); }
+
+  /* Card */
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 26px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--line);
+    border-left: 5px solid var(--subtle);
+    transition: all 0.25s;
+  }
+  .card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+  .card.complete {
+    border-left-color: var(--accent);
+    background: linear-gradient(135deg, var(--card) 0%, #F5EFE8 100%);
+  }
+
+  .card-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .card-id {
+    font-family: ui-monospace, "SF Mono", monospace;
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 700;
+    background: var(--bg);
+    padding: 3px 9px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+  .card-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.45;
+  }
+
+  .card-value {
+    font-size: 14px;
+    color: var(--text);
+    background: var(--paper);
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 14px 0 18px;
+    line-height: 1.7;
+    border-left: 3px solid var(--accent-light);
+  }
+  .card-value-label {
+    display: block;
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  /* Score row */
+  .score-block {
+    margin-top: 14px;
+    padding: 14px;
+    background: var(--bg);
+    border-radius: 8px;
+    border: 1px solid var(--line);
+  }
+  .score-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .score-row:last-child { margin-bottom: 0; }
+  .score-q {
+    flex: 0 0 100%;
+    font-size: 13px;
+    color: var(--text-soft);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .score-q strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+  .score-btn {
+    flex: 1 1 0;
+    min-width: 60px;
+    padding: 9px 8px;
+    border: 1.5px solid var(--line);
+    background: white;
+    color: var(--text-soft);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .score-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .score-btn:active { transform: translateY(0); }
+  .score-btn.active[data-score="high"] {
+    background: var(--score-high);
+    border-color: var(--score-high);
+    color: white;
+    box-shadow: 0 2px 8px rgba(124,179,66,0.3);
+  }
+  .score-btn.active[data-score="mid"] {
+    background: var(--score-mid);
+    border-color: var(--score-mid);
+    color: white;
+    box-shadow: 0 2px 8px rgba(255,167,38,0.3);
+  }
+  .score-btn.active[data-score="low"] {
+    background: var(--score-low);
+    border-color: var(--score-low);
+    color: white;
+  }
+  .score-btn.active[data-score="na"] {
+    background: var(--score-na);
+    border-color: var(--score-na);
+    color: white;
+  }
+
+  /* Table (legacy support if needed) */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+    background: var(--card);
+    border: 2px solid var(--subtle);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  th, td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+  }
+  th {
+    background: var(--accent);
+    color: white;
+    font-weight: 600;
+  }
+  td:nth-child(2) { color: var(--accent); font-weight: 600; }
+
+  /* Toast & modal */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    background: var(--text);
+    color: var(--bg);
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: var(--shadow-lg);
+    transition: transform 0.3s ease;
+    z-index: 1001;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  .modal-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(93,64,55,0.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-bg.show { display: flex; }
+  .modal {
+    background: var(--card);
+    max-width: 720px;
+    width: 100%;
+    max-height: 80vh;
+    border-radius: 12px;
+    padding: 28px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--line);
+  }
+  .modal h3 {
+    margin-bottom: 14px;
+    padding-left: 0;
+    border-left: none;
+    color: var(--accent);
+    font-size: 20px;
+  }
+  .modal-text {
+    flex: 1;
+    overflow: auto;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 16px;
+    font-family: ui-monospace, "SF Mono", monospace;
+    font-size: 13px;
+    white-space: pre-wrap;
+    margin-bottom: 18px;
+    line-height: 1.65;
+    color: var(--text);
+  }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-soft);
+    border: 1.5px solid var(--line);
+    padding: 9px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  footer {
+    padding: 44px 24px;
+    text-align: center;
+    background: var(--text);
+    color: var(--bg);
+  }
+  footer .ver { color: var(--accent-light); margin-bottom: 6px; font-weight: 600; }
+  footer .copy { font-size: 13px; color: var(--subtle); }
+
+  /* Responsive helpers */
+  @media (max-width: 540px) {
+    .card { padding: 20px; }
+    .score-btn { font-size: 13px; padding: 8px 6px; }
+    .progress-bar { padding: 10px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar">
+  <div class="progress-inner">
+    <div class="progress-text">已評分 <strong id="scored-count">0</strong> / 26 欄位</div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <button class="btn-export" id="btn-export">複製評分結果</button>
+  </div>
+</div>
+
+<header>
+  <div class="container">
+    <span class="badge">Possibility Deck v0.2</span>
+    <h1>江昱德 <span class="highlight">×</span> 棠凌行銷公司<br>AI 賦能可能性清單</h1>
+    <p class="meta">這是合作的 <strong>Part 2</strong>。Part 1（江的 AI 課程，棠凌幫推廣）已另存。</p>
+    <p class="meta-line">江昱德彙整 ｜ 給棠凌評估 ｜ 2026-04-30</p>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>一、這份文件是什麼</h2>
+    <p>這是<strong>「可能可以做」清單</strong>——不是承諾、不是技能介紹。</p>
+    <p>每一條都建立在江「目前看到、覺得可能可以做」的基礎上。<strong>真正能不能做、做到什麼程度，要等棠凌挑出有市場價值的，江再去深入研究</strong>。</p>
+    <h3>棠凌的角色</h3>
+    <p>幫江挑出「<span class="em-bg">對你客戶有需求 + 你目前判斷可以馬上商業化</span>」的條目。挑出來的江才去研究，沒挑的就先放著。</p>
+    <p>江不可能漫無目的全部研究，所以這份清單是<strong>給棠凌打方向的羅盤</strong>。</p>
+    <blockquote>每一條卡片下方有<strong>兩個欄位</strong>要打分：「客戶有需求？」和「可立刻商業化？」。評分自動存在你的瀏覽器，按右上角「複製評分結果」可一鍵複製成文字傳給江。</blockquote>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>二、棠凌行銷公司現況（江的理解）</h2>
+    <h3>業務線</h3>
+    <ul>
+      <li>短影音代操（一支 8,000–15,000 NTD）</li>
+      <li>網紅媒合</li>
+      <li>廣告投放（助理跑，給 Excel 數據）</li>
+      <li>活動行銷規劃</li>
+    </ul>
+    <h3>痛點</h3>
+    <ul>
+      <li><strong>代操成本高、規模不易</strong>：每月 30 萬套餐才能養得起；中小企業出不起</li>
+      <li><strong>業務帶走客戶</strong>：代操邏輯容易被複製，沒護城河</li>
+      <li><strong>廣告數據呈現不出價值</strong>：助理給 raw Excel，不知怎麼做給客戶看</li>
+      <li><strong>想轉型但找不到下一步</strong>：知道代操是紅海，想往「品牌資產化」走但不知怎麼起手</li>
+    </ul>
+    <blockquote>下面這份清單就是針對這四個痛點，列出「江可能可以做」的 AI 賦能應用。</blockquote>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>三、可能性清單</h2>
+    <p class="lead">點選每張卡片下方的兩個評分按鈕，記錄你的市場直覺判斷</p>
+
+    <div class="module-group" id="group-A">
+      <div class="group-header">
+        <span class="group-tag">板塊 A</span>
+        <span class="group-title">廣告投放服務升級</span>
+        <span class="group-desc">針對痛點 ③：廣告數據呈現不出價值</span>
+      </div>
+      <div id="cards-A"></div>
+    </div>
+
+    <div class="module-group" id="group-B">
+      <div class="group-header">
+        <span class="group-tag">板塊 B</span>
+        <span class="group-title">代操服務的護城河化</span>
+        <span class="group-desc">針對痛點 ②：業務帶走客戶</span>
+      </div>
+      <div id="cards-B"></div>
+    </div>
+
+    <div class="module-group" id="group-C">
+      <div class="group-header">
+        <span class="group-tag">板塊 C</span>
+        <span class="group-title">品牌資產化／網紅高階轉型</span>
+        <span class="group-desc">針對痛點 ④：想轉型找不到下一步</span>
+      </div>
+      <div id="cards-C"></div>
+    </div>
+
+    <div class="module-group" id="group-D">
+      <div class="group-header">
+        <span class="group-tag">板塊 D</span>
+        <span class="group-title">行銷公司內部 OPS</span>
+        <span class="group-desc">提升毛利、解放時間</span>
+      </div>
+      <div id="cards-D"></div>
+    </div>
+
+    <div class="module-group" id="group-E">
+      <div class="group-header">
+        <span class="group-tag">板塊 E</span>
+        <span class="group-title">新服務線（合作衍生）</span>
+        <span class="group-desc">最有想像力，需要雙方一起設計</span>
+      </div>
+      <div id="cards-E"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>四、棠凌的填表方式</h2>
+    <h3>客戶有需求？</h3>
+    <ul>
+      <li><strong>高</strong> = 我客戶會直接買單</li>
+      <li><strong>中</strong> = 我客戶可能會用，但要說服</li>
+      <li><strong>低</strong> = 想得到但客戶不會優先要</li>
+      <li><strong>不適合</strong> = 不在我的市場</li>
+    </ul>
+    <h3>可立刻商業化？</h3>
+    <ul>
+      <li><strong>高</strong> = 你做出來我這禮拜就能拿去談</li>
+      <li><strong>中</strong> = 你做出來我可以慢慢推</li>
+      <li><strong>低</strong> = 想像得到，但需要其他配套</li>
+      <li><strong>不適合</strong> = 商業化路徑不明</li>
+    </ul>
+    <blockquote>
+      <strong>篩選邏輯</strong>：兩欄都「高」= S 級，江立刻深研究；一高一中 = A 級；其他先放著。
+    </blockquote>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>五、江誠實版自我定位</h2>
+    <table>
+      <thead>
+        <tr><th>維度</th><th>自評</th><th>對行銷公司的意義</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>隱性知識提煉</td><td>強（主場）</td><td>板塊 C 是江最會的，原指令、品牌風格提煉直接套用</td></tr>
+        <tr><td>技能包架構</td><td>強（主場）</td><td>板塊 E3 棠凌專屬 Skill 直接是江的核心能力</td></tr>
+        <tr><td>資料整理流程設計</td><td>強</td><td>板塊 A1、D 系列、E2 都是這個能力的延伸</td></tr>
+        <tr><td>AI 工具搭配</td><td>中強</td><td>Codex + Claude 分工成熟；廣告平台 API 串接需驗證</td></tr>
+        <tr><td>行銷實戰判斷</td><td>弱（自承）</td><td>行銷專業是棠凌主場，江提供工具不取代你的判斷</td></tr>
+        <tr><td>長期穩定運營</td><td>看案例</td><td>單次／專案制 OK；每天有客戶在跑的服務要先試小規模</td></tr>
+      </tbody>
+    </table>
+    <blockquote>
+      <strong>誠實邊界</strong>：江會的是「讓 AI 認識你的客戶 / 你的風格 / 你的判斷」這套底層流程。具體行銷策略、客戶溝通、業務談判，是棠凌的場子。<strong>江不越界</strong>。
+    </blockquote>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>六、棠凌可能會問</h2>
+    <ul>
+      <li><strong>「這跟我助理現在做的有什麼不同？」</strong>→ 助理是用人腦做事，這套是讓客戶資產累積到 AI 可讀的格式，是規模化的基礎</li>
+      <li><strong>「我客戶肯把資料給 AI 嗎？」</strong>→ 江有資料安全的處理流程（Claude 不訓練、本地資料夾控管），可以對客戶完整解釋</li>
+      <li><strong>「成本誰付？」</strong>→ 待議。建議先用 1-2 個願意當白老鼠的客戶實測，再決定收費結構</li>
+      <li><strong>「江會不會撈過界，跟我搶客戶？」</strong>→ 江主場是 AI 系統設計，客戶關係是棠凌專場。書面分工可以寫清楚</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>七、下一步</h2>
+    <ul>
+      <li><strong>棠凌打分</strong>：13 條每條兩欄，5–10 分鐘完成</li>
+      <li><strong>江拿到分數後</strong>：兩高的 S 級立刻深研究、做小範例 demo</li>
+      <li><strong>約 30 分鐘對齊</strong>：選 1–2 條 S 級條目試跑第一個合作案例</li>
+      <li><strong>產出 v0.3</strong>：根據第一次合作的實際經驗，再修清單</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>八、跟 Part 1 的接合</h2>
+    <p>Part 1（咪卡推廣 + 工作坊）和 Part 2（行銷公司賦能）不是兩條無關的線：</p>
+    <ul>
+      <li><strong>E2 中小企業 AI 知識管理顧問</strong>：Part 1 的工作坊學員 → 進階成 Part 2 的顧問客戶</li>
+      <li><strong>B1 客戶品牌知識庫</strong>：用的就是 AI 辦公室 + 咪卡的底層架構</li>
+      <li><strong>D 系列內部 OPS</strong>：等於棠凌自己用一套 AI 辦公室</li>
+    </ul>
+    <blockquote>兩部分疊加之後，整體合作是<strong>「我幫你帶客戶進來上工作坊（Part 1） + 我幫你的行銷公司用 AI 變強（Part 2）」</strong>雙向。</blockquote>
+  </div>
+</section>
+
+<footer>
+  <div class="ver">v0.2 ｜ 江單方草稿，未經棠凌回饋</div>
+  <div class="copy">江昱德彙整 ｜ 2026-04-30</div>
+</footer>
+
+<div class="toast" id="toast">已複製到剪貼簿</div>
+
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h3>評分結果（複製給江）</h3>
+    <div class="modal-text" id="modal-text"></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" id="btn-close">關閉</button>
+      <button class="btn-export" id="btn-copy">複製到剪貼簿</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ITEMS = [
+  // 板塊 A 廣告投放升級
+  { id: 'A1', section: 'A',
+    name: '廣告數據雙報告產生器',
+    value: 'raw Excel → 客戶版（有故事、看得懂、像在認真布局）+ 自用版（決策建議：哪裡好哪裡爛、優化方向）。直接解你會議裡提到的痛點——客戶覺得你超用心，自己也有判斷依據'
+  },
+  { id: 'A2', section: 'A',
+    name: '競品流量／策略偵查',
+    value: '投案前 10 分鐘抓 3 家競品流量、來源管道、跳出率，提案說服力大增——從接案前就壓過同行'
+  },
+  { id: 'A3', section: 'A',
+    name: '廣告素材疲乏度監測',
+    value: 'CTR、ROAS、CVR 自動追蹤，疲乏時 LINE 預警「該換素材了」——月費 retainer 的核心交付'
+  },
+  // 板塊 B 護城河化
+  { id: 'B1', section: 'B',
+    name: '客戶品牌知識庫建置',
+    value: '把客戶的品牌調性、過往素材、客戶輪廓、服務 SOP 整理成 AI 可讀資料夾。客戶換業務、換服務商，那份資產還在他手上，但他已經習慣你的服務方式，換不掉——你提到「業務帶不走客戶」的具體解法'
+  },
+  { id: 'B2', section: 'B',
+    name: '「讓 AI 學客戶風格」生圖／生文',
+    value: '江有原指令法。一次提煉客戶風格，之後生出來的圖文都是該客戶專屬，不是大眾 AI——客戶差異化、減少代操腦力消耗'
+  },
+  { id: 'B3', section: 'B',
+    name: '客戶月報自動化',
+    value: '不再每月手寫報告。AI 抓數據 → 對齊上月 → 寫故事化敘述 → 你只審稿——一週工時砍一半，月費維持'
+  },
+  // 板塊 C 品牌資產化
+  { id: 'C1', section: 'C',
+    name: 'KOL 數位分身建置',
+    value: '幫網紅打造他自己的 AI 分身（不是替身演出，是底層工作流），可代理回粉絲、寫腳本草稿、生風格圖——呼應你提的「品牌資產化」路線。麵包網紅、水餃網紅那類案子的工具層'
+  },
+  { id: 'C2', section: 'C',
+    name: '品牌風格提煉成可操作指令庫',
+    value: '把 KOL 或品牌的隱性風格（語氣、視覺、價值觀）提煉成 AI 可調用的指令，跨平台一致——你做「靈芝」個人 IP 也用得到。江的隱性知識提煉直接落地'
+  },
+  { id: 'C3', section: 'C',
+    name: '轉換廣告數據敘事',
+    value: '不是做內容，是幫客戶看「流量怎麼變客人」的數據故事。對應史總監走的方向——從代操升級到顧問層，跳出紅海'
+  },
+  // 板塊 D 內部 OPS
+  { id: 'D1', section: 'D',
+    name: '客戶資料庫自動化',
+    value: '每個客戶一個資料夾，提案、合約、素材、月報都在裡面，AI 隨時可調用。不再到處翻——內部效率，但效益累積到客戶服務'
+  },
+  { id: 'D2', section: 'D',
+    name: '提案產生器',
+    value: '把過往成功提案的要素抽出，新案輸入「客戶名／產業／需求」就生草稿——接案週期砍半'
+  },
+  { id: 'D3', section: 'D',
+    name: '助理培訓 AI 助教',
+    value: '把你的判斷邏輯做成 AI 助教，助理卡關問 AI 不問你——解放你的時間，助理也能做更深的事'
+  },
+  // 板塊 E 新服務線
+  { id: 'E1', section: 'E',
+    name: '「廣告數據報告」變訂閱產品',
+    value: '把 A1 標準化做成 SaaS-like 訂閱（每月 X 千元/客戶）——月費型收入，可規模化，不再「做完就沒了」'
+  },
+  { id: 'E2', section: 'E',
+    name: '中小企業 AI 知識管理顧問（搭咪卡）',
+    value: '從客戶「亂 Excel 變報告」這個小切入點進入，再聊深度知識庫建置——Part 1 與 Part 2 的接合處，雙方都加分'
+  },
+  { id: 'E3', section: 'E',
+    name: '棠凌專屬 Skill 包',
+    value: '把你的行銷判斷／提案邏輯／客戶分群打包成可賣斷或租用的 Skill——你的隱性知識變成可規模化的數位資產'
+  }
+];
+
+const SCORE_LABELS = { high: '高', mid: '中', low: '低', na: '不適合' };
+const QUESTIONS = [
+  { key: 'demand', q: '<strong>客戶有需求？</strong>' },
+  { key: 'biz', q: '<strong>可立刻商業化？</strong>' }
+];
+const STORAGE_KEY = 'mns-deck-v02-scores';
+const TOTAL_FIELDS = 15 * 2;
+
+function loadScores() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+  catch (e) { return {}; }
+}
+function saveScores(s) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+}
+function escapeHTML(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function renderCard(item) {
+  const scoreRows = QUESTIONS.map(q => `
+    <div class="score-row">
+      <span class="score-q">${q.q}</span>
+      <button class="score-btn" data-id="${item.id}" data-q="${q.key}" data-score="high">高</button>
+      <button class="score-btn" data-id="${item.id}" data-q="${q.key}" data-score="mid">中</button>
+      <button class="score-btn" data-id="${item.id}" data-q="${q.key}" data-score="low">低</button>
+      <button class="score-btn" data-id="${item.id}" data-q="${q.key}" data-score="na">不適合</button>
+    </div>
+  `).join('');
+  return `
+    <div class="card" id="card-${item.id}" data-id="${item.id}">
+      <div class="card-head">
+        <span class="card-id">${item.id}</span>
+        <span class="card-name">${escapeHTML(item.name)}</span>
+      </div>
+      <div class="card-value">
+        <span class="card-value-label">可能可以做的事 / 對棠凌的價值</span>
+        ${escapeHTML(item.value)}
+      </div>
+      <div class="score-block">
+        ${scoreRows}
+      </div>
+    </div>
+  `;
+}
+
+function renderAll() {
+  const groups = { A: [], B: [], C: [], D: [], E: [] };
+  ITEMS.forEach(it => groups[it.section].push(it));
+  Object.keys(groups).forEach(g => {
+    const el = document.getElementById('cards-' + g);
+    if (el) el.innerHTML = groups[g].map(renderCard).join('');
+  });
+}
+
+function applyScores() {
+  const scores = loadScores();
+  let count = 0;
+  document.querySelectorAll('.card').forEach(card => {
+    const id = card.dataset.id;
+    const itemScores = scores[id] || {};
+    let cardComplete = QUESTIONS.every(q => itemScores[q.key]);
+    card.classList.toggle('complete', cardComplete);
+    card.querySelectorAll('.score-btn').forEach(b => b.classList.remove('active'));
+    QUESTIONS.forEach(q => {
+      const sc = itemScores[q.key];
+      if (sc) {
+        const btn = card.querySelector(`.score-btn[data-q="${q.key}"][data-score="${sc}"]`);
+        if (btn) btn.classList.add('active');
+        count++;
+      }
+    });
+  });
+  document.getElementById('scored-count').textContent = count;
+  document.getElementById('progress-fill').style.width = (count / TOTAL_FIELDS * 100) + '%';
+}
+
+function exportText() {
+  const scores = loadScores();
+  const today = new Date().toISOString().slice(0, 10);
+  let txt = `# 棠凌評分結果（${today}）\n\n`;
+  const groupNames = {
+    A: '板塊 A｜廣告投放服務升級',
+    B: '板塊 B｜代操服務的護城河化',
+    C: '板塊 C｜品牌資產化／網紅高階轉型',
+    D: '板塊 D｜行銷公司內部 OPS',
+    E: '板塊 E｜新服務線（合作衍生）'
+  };
+  let unscored = 0;
+  let bothHigh = [];
+  Object.keys(groupNames).forEach(g => {
+    txt += `## ${groupNames[g]}\n`;
+    ITEMS.filter(i => i.section === g).forEach(it => {
+      const sc = scores[it.id] || {};
+      const d = sc.demand ? SCORE_LABELS[sc.demand] : '（未評）';
+      const b = sc.biz ? SCORE_LABELS[sc.biz] : '（未評）';
+      if (!sc.demand || !sc.biz) unscored++;
+      if (sc.demand === 'high' && sc.biz === 'high') {
+        bothHigh.push(`${it.id} ${it.name}`);
+      }
+      txt += `- **${it.id} ${it.name}**\n  需求：${d} ｜ 商業化：${b}\n`;
+    });
+    txt += '\n';
+  });
+  txt += `---\n\n## S 級（兩欄都「高」，江立刻深研究）\n`;
+  if (bothHigh.length === 0) {
+    txt += `- （無）\n`;
+  } else {
+    bothHigh.forEach(b => txt += `- ${b}\n`);
+  }
+  if (unscored > 0) txt += `\n備註：尚有 ${unscored} 條未填完整\n`;
+  return txt;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('score-btn')) {
+    const id = e.target.dataset.id;
+    const q = e.target.dataset.q;
+    const score = e.target.dataset.score;
+    const scores = loadScores();
+    if (!scores[id]) scores[id] = {};
+    if (scores[id][q] === score) {
+      delete scores[id][q];
+      if (Object.keys(scores[id]).length === 0) delete scores[id];
+    } else {
+      scores[id][q] = score;
+    }
+    saveScores(scores);
+    applyScores();
+  }
+});
+
+document.getElementById('btn-export').addEventListener('click', () => {
+  const txt = exportText();
+  document.getElementById('modal-text').textContent = txt;
+  document.getElementById('modal-bg').classList.add('show');
+});
+
+document.getElementById('btn-close').addEventListener('click', () => {
+  document.getElementById('modal-bg').classList.remove('show');
+});
+
+document.getElementById('modal-bg').addEventListener('click', e => {
+  if (e.target.id === 'modal-bg') {
+    document.getElementById('modal-bg').classList.remove('show');
+  }
+});
+
+document.getElementById('btn-copy').addEventListener('click', async () => {
+  const txt = document.getElementById('modal-text').textContent;
+  try {
+    await navigator.clipboard.writeText(txt);
+    showToast('已複製到剪貼簿');
+  } catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = txt;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('已複製到剪貼簿');
+  }
+});
+
+renderAll();
+applyScores();
+</script>
+
+</body>
+</html>
