@@ -183,30 +183,48 @@
     box-shadow: var(--shadow-md);
   }
 
-  /* Module group */
-  .module-group { margin-bottom: 44px; }
+  /* Module group — heavily separated */
+  .module-group {
+    margin-bottom: 56px;
+    padding: 28px 24px 32px;
+    background: var(--paper);
+    border-radius: 14px;
+    border: 1.5px solid var(--line-strong);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+  }
+  .module-group:not(:last-of-type)::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 2px;
+    margin: 56px auto -84px;
+  }
+  .module-group:last-of-type { margin-bottom: 0; }
   .group-header {
     display: flex;
     align-items: baseline;
     gap: 14px;
-    margin-bottom: 20px;
-    padding: 14px 18px;
+    margin-bottom: 22px;
+    padding: 16px 20px;
     background: var(--text);
     border-radius: 8px;
     flex-wrap: wrap;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
   }
   .group-tag {
-    font-size: 13px;
-    padding: 5px 14px;
+    font-size: 14px;
+    padding: 6px 16px;
     background: var(--accent);
     color: white;
     border-radius: 4px;
     letter-spacing: 0.12em;
     font-weight: 700;
   }
-  .group-title { font-size: 18px; color: var(--paper); font-weight: 700; }
-  .group-desc { font-size: 13px; color: #D7CCC8; }
+  .group-title { font-size: 19px; color: var(--paper); font-weight: 800; }
+  .group-desc { font-size: 13.5px; color: #D7CCC8; }
 
   /* Card */
   .card {
