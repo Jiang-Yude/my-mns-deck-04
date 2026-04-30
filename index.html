@@ -456,8 +456,98 @@
   /* Responsive helpers */
   @media (max-width: 540px) {
     .card { padding: 20px; }
-    .score-btn { font-size: 13px; padding: 8px 6px; }
-    .progress-bar { padding: 10px 14px; }
+  }
+
+  /* Reference gallery */
+  .ref-intro {
+    background: var(--paper);
+    padding: 18px 22px;
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 24px;
+    font-size: 14px;
+    color: var(--text-soft);
+  }
+  .ref-intro strong { color: var(--text); }
+  .ref-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  @media (min-width: 720px) {
+    .ref-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .ref-item {
+    background: var(--card);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--line);
+    transition: all 0.25s;
+  }
+  .ref-item:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  .ref-item img {
+    width: 100%;
+    display: block;
+    background: #0a1628;
+    cursor: zoom-in;
+  }
+  .ref-cap {
+    padding: 14px 18px;
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+  }
+  .ref-cap-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .ref-cap-note {
+    font-size: 13px;
+    color: var(--text-soft);
+    line-height: 1.5;
+  }
+  .ref-source {
+    text-align: center;
+    margin-top: 28px;
+    font-size: 13px;
+    color: var(--text-soft);
+    font-style: italic;
+  }
+
+  /* Lightbox */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    cursor: zoom-out;
+  }
+  .lightbox.show { display: flex; }
+  .lightbox img {
+    max-width: 100%;
+    max-height: 95vh;
+    border-radius: 4px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    color: white;
+    font-size: 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
   }
 </style>
 </head>
@@ -619,6 +709,93 @@
   </div>
 </section>
 
+<section>
+  <div class="container">
+    <h2>九、附錄：對標範例</h2>
+    <p class="lead">Rex Lin 4/29「打造尼爾森等級的品牌戰情系統」工作坊精選頁</p>
+    <div class="ref-intro">
+      <strong>為什麼放這個</strong>：上面講的「可能可以做」聽起來抽象。下面這 8 張是 Rex Lin 工作坊現場展示的具體樣本——這就是<strong>戰情室／預警／自動化的成品長相</strong>。江能做的事情，跟這個方向高度重疊，差別在江會把它接到棠凌的客戶情境裡。<br><br>
+      圖只是參考範本，不代表江最終做出來的長一樣。看的時候請聚焦：「我的廣告投放／代操／品牌客戶，會不會有這個需求？」
+    </div>
+
+    <div class="ref-grid">
+      <div class="ref-item">
+        <img src="pdf/p-29.png" alt="AIPL 框架">
+        <div class="ref-cap">
+          <div class="ref-cap-title">AIPL 品牌分析框架</div>
+          <div class="ref-cap-note">Awareness / Interest / Purchase / Loyalty 四階段，行銷人最熟的決策框架。對應策略書 A1（廣告數據雙報告）的底層邏輯。</div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <img src="pdf/p-25.png" alt="Decision Logic 狀況 1+2">
+        <div class="ref-cap">
+          <div class="ref-cap-title">從指標到行動：4 種典型狀況（1）</div>
+          <div class="ref-cap-note">市場熱度上升但品牌聲量沒上升 / 網站流量上升但轉換率下降。對應廣告投放診斷的標準劇本。</div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <img src="pdf/p-26.png" alt="Decision Logic 狀況 3+4">
+        <div class="ref-cap">
+          <div class="ref-cap-title">從指標到行動：4 種典型狀況（2）</div>
+          <div class="ref-cap-note">ROAS 下降但 CTR 維持正常 / 高價值會員活躍下降。直接對標棠凌助理跑出來的廣告數據。</div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <img src="pdf/p-37.png" alt="三步驟生成儀表盤">
+        <div class="ref-cap">
+          <div class="ref-cap-title">三步驟生成儀表盤</div>
+          <div class="ref-cap-note">準備品牌資訊 → 複製 Prompt 模板 → 5–10 分鐘產出完整儀表盤。對應策略書 A1 / E1（報告產生器訂閱化）。</div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <img src="pdf/p-40.png" alt="冰山一角三個問題">
+        <div class="ref-cap">
+          <div class="ref-cap-title">儀表盤的三個侷限</div>
+          <div class="ref-cap-note">數據不會自己更新 / 不會在危機時通知你 / 團隊每人都要重做一遍。這三個痛點推導出後面三個系統化模組。</div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <img src="pdf/p-42.png" alt="Foundation 模擬到真實數據">
+        <div class="ref-cap">
+          <div class="ref-cap-title">從模擬數據到真實數據</div>
+          <div class="ref-cap-note">Google Sheets 品牌數據庫 + 儀表盤即時連動。對應策略書 B1（客戶品牌知識庫建置）。</div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <img src="pdf/p-44.png" alt="LINE 預警系統">
+        <div class="ref-cap">
+          <div class="ref-cap-title">LINE 預警系統</div>
+          <div class="ref-cap-note">競品異動 / 品牌危機 / 會員流失 / 關鍵詞機會。對應策略書 A3（廣告素材疲乏度監測）的長期形態。</div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <img src="pdf/p-45.png" alt="SCALE 自動週報 + 一鍵複製">
+        <div class="ref-cap">
+          <div class="ref-cap-title">自動週報 + 一鍵複製</div>
+          <div class="ref-cap-note">每週自動寄洞察週報 / 系統打包成 Skill 一鍵啟動。直接對標策略書 B3（客戶月報自動化）+ E3（棠凌專屬 Skill）。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ref-source">
+      圖片來源：Rex Lin 4/29「打造尼爾森等級的品牌戰情系統」工作坊講義，參考用。<br>
+      若想看完整 52 頁，請另外跟江昱德拿。
+    </div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightbox-close">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
 <footer>
   <div class="ver">v0.2 ｜ 江單方草稿，未經棠凌回饋</div>
   <div class="copy">江昱德彙整 ｜ 2026-04-30</div>
@@ -737,6 +914,17 @@ function renderAll() {
 }
 
 renderAll();
+
+// Lightbox
+document.querySelectorAll('.ref-item img').forEach(img => {
+  img.addEventListener('click', () => {
+    document.getElementById('lightbox-img').src = img.src;
+    document.getElementById('lightbox').classList.add('show');
+  });
+});
+document.getElementById('lightbox').addEventListener('click', () => {
+  document.getElementById('lightbox').classList.remove('show');
+});
 </script>
 
 </body>
